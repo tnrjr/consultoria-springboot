@@ -57,7 +57,7 @@ public class ProjectService {
     }
 
     @Transactional
-    private ProjectDTO assignConsultant(Long projectId, Long consultantId) {
+    public ProjectDTO assignConsultant(Long projectId, Long consultantId) {
         var p = projects.findById(projectId).orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
         var c = consultants.findById(projectId).orElseThrow(() -> new IllegalArgumentException("Consultor não encontrado"));
         p.getConsultores().add(c);
@@ -66,7 +66,7 @@ public class ProjectService {
 
 
     @Transactional
-    private ProjectDTO unassignConsultant(Long projectId, Long consultantId) {
+    public ProjectDTO unassignConsultant(Long projectId, Long consultantId) {
         var p = projects.findById(projectId).orElseThrow(() -> new IllegalArgumentException("Produto não encontrado"));
         p.getConsultores().removeIf(c -> c.getId().equals(consultantId));
         return toDTO(projects.save(p));
