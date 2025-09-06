@@ -23,7 +23,7 @@ import java.util.Set;
 @Getter @Setter
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = "consultores")
-public class    Project {
+public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +36,7 @@ public class    Project {
     @Column(columnDefinition = "text")
     private String Descricao;
 
-    @Column(name = "data_inico", nullable = false)
+    @Column(name = "data_inicio", nullable = false)
     private LocalDate dataInicio;
 
     @Column(name = "data_fim")
