@@ -5,3 +5,10 @@ spring:
       platform: h2           # ou postgres
   jpa:
     defer-datasource-initialization: true
+
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page-size: 100
+        one-indexed-parameters: false

@@ -3,6 +3,8 @@ package com.tary.ey.services;
 import com.tary.ey.domain.Consultant;
 import com.tary.ey.dtos.ConsultantDTO;
 import com.tary.ey.repositories.ConsultantRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +19,8 @@ public class ConsultantService {
         this.repo = repo;
     }
 
-    public List<ConsultantDTO> list(){
-        return repo.findAll().stream().map(this::toDTO).toList();
+    public Page<ConsultantDTO> list(Pageable pageable){
+        return repo.findAll(pageable).map(this::toDTO);
     }
 
     public ConsultantDTO get(Long id) {

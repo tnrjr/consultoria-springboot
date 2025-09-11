@@ -6,14 +6,14 @@ import com.tary.ey.domain.ProjectStatus;
 import com.tary.ey.dtos.ProjectDTO;
 import com.tary.ey.repositories.ConsultantRepository;
 import com.tary.ey.repositories.ProjectRepository;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.copy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 
 @Service
@@ -27,9 +27,11 @@ public class ProjectService {
         this.consultants = consultants;
     }
 
-    public java.util.List<ProjectDTO> list(ProjectStatus status){
-        var data = (status == null) ? projects.findAll() : projects.findByStatus(status);
-        return data.stream().map(this::toDTO).toList();
+    public Page<ProjectDTO> list(ProjectStatus status, Pageable pageable) {
+        var data = (status == null)
+                ? projects.findAll(pageable)          // pagina tudo
+                : projects.findByStatus(status, pageable); // pagina com filtro
+        return data.map(this::toDTO); // converte cada Project -> ProjectDTO
     }
 
     public ProjectDTO get(Long id) {
@@ -70,7 +72,7 @@ public class ProjectService {
     @Transactional
     public ProjectDTO unassignConsultant(Long projectId, Long consultantId) {
         var p = projects.findById(projectId)
-                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
         p.getConsultores().removeIf(c -> c.getId().equals(consultantId));
         return toDTO(projects.save(p));
     }

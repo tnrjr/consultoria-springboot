@@ -42,7 +42,7 @@ public class Project {
     @Column(name = "data_fim")
     private LocalDate dataFim;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private ProjectStatus status;
 

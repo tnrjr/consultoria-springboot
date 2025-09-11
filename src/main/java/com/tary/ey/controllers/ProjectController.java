@@ -5,9 +5,11 @@ import com.tary.ey.dtos.AssignRequest;
 import com.tary.ey.dtos.ProjectDTO;
 import com.tary.ey.services.ProjectService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @RestController
@@ -21,8 +23,11 @@ public class ProjectController {
     }
 
     @GetMapping
-    public List<ProjectDTO> list(@RequestParam(required = false) ProjectStatus status) {
-        return service.list(status);
+    public Page<ProjectDTO> list(
+            @RequestParam(required = false) ProjectStatus status,
+            Pageable pageable
+    ) {
+        return service.list(status, pageable);
     }
 
 
