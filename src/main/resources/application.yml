@@ -1,9 +1,7 @@
 spring:
-  jpa:
-    hibernate:
-      ddl-auto: update
-    # garante que JPA crie as tabelas antes de executar o data.sql
-    defer-datasource-initialization: true
   sql:
     init:
-      mode: always   # roda data.sql mesmo não sendo banco embutido
+      mode: always
+      platform: h2           # ou postgres
+  jpa:
+    defer-datasource-initialization: true
