@@ -32,7 +32,7 @@ public class ProjectService {
         return data.stream().map(this::toDTO).toList();
     }
 
-    public ProjectDTO ge(Long id) {
+    public ProjectDTO get(Long id) {
         var p = projects.findById(id).orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
         return toDTO(p);
     }
@@ -58,8 +58,10 @@ public class ProjectService {
 
     @Transactional
     public ProjectDTO assignConsultant(Long projectId, Long consultantId) {
-        var p = projects.findById(projectId).orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
-        var c = consultants.findById(projectId).orElseThrow(() -> new IllegalArgumentException("Consultor não encontrado"));
+        var p = projects.findById(projectId)
+                .orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
+        var c = consultants.findById(consultantId)
+                .orElseThrow(() -> new IllegalArgumentException("Consultor não encontrado"));
         p.getConsultores().add(c);
         return toDTO(projects.save(p));
     }
@@ -67,7 +69,8 @@ public class ProjectService {
 
     @Transactional
     public ProjectDTO unassignConsultant(Long projectId, Long consultantId) {
-        var p = projects.findById(projectId).orElseThrow(() -> new IllegalArgumentException("Produto não encontrado"));
+        var p = projects.findById(projectId)
+                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado"));
         p.getConsultores().removeIf(c -> c.getId().equals(consultantId));
         return toDTO(projects.save(p));
     }
@@ -79,7 +82,7 @@ public class ProjectService {
     /** Copia os campos do DTO para a entidade. */
     private void copy(ProjectDTO dto, Project p) {
         p.setNome(dto.nome());
-        p.setDescricao(dto.Descricao());
+        p.setDescricao(dto.descricao());
         p.setDataInicio(dto.dataInicio());
         p.setDataFim(dto.dataFim());
         p.setStatus(dto.status());
@@ -95,7 +98,8 @@ public class ProjectService {
 
 
     private ProjectDTO toDTO(Project p) {
-        Set<Long> ids = p.getConsultores().stream().map(Consultant::getId).collect(Collectors.toSet());
+        var set = p.getConsultores() == null ? Set.<Consultant>of() : p.getConsultores();
+        Set<Long> ids = set.stream().map(Consultant::getId).collect(Collectors.toSet());
         return new ProjectDTO(p.getId(), p.getNome(), p.getDescricao(), p.getDataInicio(), p.getDataFim(), p.getStatus(), ids);
     }
 }

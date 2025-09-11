@@ -7,7 +7,7 @@ import java.util.Set;
 public record ProjectDTO (
     Long id,
     String nome,
-    String Descricao,
+    String descricao,
     LocalDate dataInicio,
     LocalDate dataFim,
     ProjectStatus status,

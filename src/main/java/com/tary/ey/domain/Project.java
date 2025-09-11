@@ -34,7 +34,7 @@ public class Project {
     private String nome;
 
     @Column(columnDefinition = "text")
-    private String Descricao;
+    private String descricao;
 
     @Column(name = "data_inicio", nullable = false)
     private LocalDate dataInicio;
@@ -54,6 +54,8 @@ public class Project {
             uniqueConstraints = @UniqueConstraint(name = "uk_pc_project_consultant", columnNames = {"project_id","consultant_id"})
     )
 
-    private Set<Consultant> consultores = new HashSet<>();
-
+    @Builder.Default
+    private java.util.Set<Consultant> consultores = new java.util.HashSet<>();
 }
+
+
