@@ -73,6 +73,23 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleNotReadable(org.springframework.http.converter.HttpMessageNotReadableException ex,
+                                      HttpServletRequest req) {
+        String detail = ex.getMostSpecificCause() != null
+                ? ex.getMostSpecificCause().getMessage()
+                : ex.getMessage();
+        return ApiError.of(
+                HttpStatus.BAD_REQUEST.value(),
+                "Requisição inválida",
+                "Payload malformado ou campo com formato inválido: " + detail,
+                req.getRequestURI(),
+                List.of()
+        );
+    }
+
+
     // 409: violações de chave única/foreign key, etc
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
