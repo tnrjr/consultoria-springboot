@@ -186,6 +186,99 @@ public class GlobalExceptionHandler {
    docker run -p 8080:8080 ey-backend
    ```
 
+# Exemplos de Requisições
+
+Abaixo estão exemplos de requisições para a API rodando localmente (`http://localhost:8080`).
+
+---
+
+## Criar um Consultor
+
+**POST** `/api/consultants`
+
+```json
+{
+  "nome": "João Silva",
+  "email": "joao.silva@empresa.com",
+  "especialidade": "Gestão de Projetos"
+}
+```
+
+---
+
+## Listar Consultores
+
+**GET** `/api/consultants`
+
+Resposta (exemplo):
+```json
+[
+  {
+    "id": 1,
+    "nome": "João Silva",
+    "email": "joao.silva@empresa.com",
+    "especialidade": "Gestão de Projetos"
+  }
+]
+```
+
+---
+
+## Criar um Projeto
+
+**POST** `/api/projects`
+
+```json
+{
+  "nome": "Implantação ERP",
+  "descricao": "Projeto para implantar sistema ERP",
+  "dataInicio": "2025-09-01",
+  "dataFim": "2026-03-01",
+  "status": "EM_ANDAMENTO",
+  "consultoresIds": [1]
+}
+```
+
+---
+
+## Listar Projetos
+
+**GET** `/api/projects`
+
+Resposta (exemplo):
+```json
+[
+  {
+    "id": 1,
+    "nome": "Implantação ERP",
+    "descricao": "Projeto para implantar sistema ERP",
+    "dataInicio": "2025-09-01",
+    "dataFim": "2026-03-01",
+    "status": "EM_ANDAMENTO",
+    "consultoresIds": [1]
+  }
+]
+```
+
+---
+
+## Associar Consultor a Projeto
+
+**POST** `/api/projects/1/consultants/1`
+
+Resposta (exemplo):
+```json
+{
+  "id": 1,
+  "nome": "Implantação ERP",
+  "descricao": "Projeto para implantar sistema ERP",
+  "dataInicio": "2025-09-01",
+  "dataFim": "2026-03-01",
+  "status": "EM_ANDAMENTO",
+  "consultoresIds": [1]
+}
+```
+
 ### Deploy no Google Cloud Run
 1. Criar e configurar instância do Cloud SQL (PostgreSQL).  
 2. Configurar Secret Manager para armazenar `DB_PASSWORD`.  
